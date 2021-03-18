@@ -1,0 +1,26 @@
+version: "3.7"
+networks:
+    default:
+        name: ${DOCKER_NETWORK_NAME}
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: ${DOCKER_NETWORK_SUBNET}
+
+services:
+    app:
+        build:
+            args:
+                user: ${DOCKER_USER}
+                uid: ${DOCKER_UID}
+            context: ./
+            dockerfile: .docker/Dockerfile
+        image: ${DOCKER_IMAGE_NAME}-app
+        container_name: ${DOCKER_IMAGE_NAME}-app
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        networks:
+            - default
