@@ -2,14 +2,11 @@
 
 namespace App\Providers;
 
-use App\FeeCalculator\BusinessWithdrawCalculator;
 use App\FeeCalculator\Calculator;
 use App\FeeCalculator\CsvFeeCalculator;
 use App\FeeCalculator\CsvFeeCalculatorInterface;
 use App\FeeCalculator\CurrencyConvertor;
 use App\FeeCalculator\CurrencyConvertorInterface;
-use App\FeeCalculator\DepositFeeCalculator;
-use App\FeeCalculator\PrivateWithdrawCalculator;
 use Illuminate\Support\ServiceProvider;
 
 class FeeCalculatorServiceProvider extends ServiceProvider
@@ -31,13 +28,12 @@ class FeeCalculatorServiceProvider extends ServiceProvider
         CurrencyConvertorInterface::class => CurrencyConvertor::class,
     ];
 
-    public function register(): void
+    public function boot(): void
     {
-        $this->app->tag([
-            PrivateWithdrawCalculator::class,
-            BusinessWithdrawCalculator::class,
-            DepositFeeCalculator::class
-        ], ['feeCalculator']);
+        $this->app->tag(
+            $this->app->config->get('fee-calculator.calculators'),
+            ['feeCalculator']
+        );
 
         $this->app->bind(Calculator::class, function ($app) {
             return new Calculator($app->tagged('feeCalculator'));

@@ -40,7 +40,7 @@ class PrivateWithdrawCalculator implements FeeCalculatorInterface
             && $operation->weeklyAmount > self::WEEKLY_LIMIT_AMOUNT
             && $this->limitExceededFirstTime($operation)) {
             $eurAmount = $operation->weeklyAmount - self::WEEKLY_LIMIT_AMOUNT;
-            $amount = $this->convertor->convertFromEUR($eurAmount, $operation->currency);
+            $amount = $this->convertor->convertFromBaseCurrency($eurAmount, $operation->currency);
         }
 
         return Operation::getPercentsFrom(self::FEE, $amount);

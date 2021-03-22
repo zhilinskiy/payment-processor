@@ -47,11 +47,11 @@ class CsvFeeCalculator implements CsvFeeCalculatorInterface
             if ($operation->isPrivateWithdraw()) {
                 if (!$prevOperation || !$prevOperation->isOnSameWeek($operation)) {
                     $operation->weeklyCount = 1;
-                    $operation->weeklyAmount = $this->convertor->convertToEUR($operation->amount, $operation->currency);
+                    $operation->weeklyAmount = $this->convertor->convertToBaseCurrency($operation->amount, $operation->currency);
                 } else {
                     $operation->weeklyCount = $prevOperation->weeklyCount + 1;
                     $operation->weeklyAmount = $prevOperation->weeklyAmount +
-                        $this->convertor->convertToEUR($operation->amount, $operation->currency);
+                        $this->convertor->convertToBaseCurrency($operation->amount, $operation->currency);
                 }
                 $prevOperation = $operation;
             }
