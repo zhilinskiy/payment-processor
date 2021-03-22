@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\FeeCalculator\CsvFeeCalculatorInterface;
 use Illuminate\Console\Command;
 use InvalidArgumentException;
 
@@ -11,27 +12,11 @@ class CsvCommissionFeeCalculatorCommand extends Command
 
     protected $description = 'Handles operations provided in CSV format and calculates a commission fee for them.';
 
-    public function handle()
+    public function handle(CsvFeeCalculatorInterface $calculator): void
     {
-        $path = $this->getFilePath();
-        $fee = [
-            [0.60],
-            [3.00],
-            [0.00],
-            [0.06],
-            [1.50],
-            [0],
-            [0.70],
-            [0.30],
-            [0.30],
-            [3.00],
-            [0.00],
-            [0.00],
-            [8612],
-        ];
         $this->table(
             ['Fee'],
-            $fee
+            $calculator->calculateFees($this->getFilePath())
         );
     }
 

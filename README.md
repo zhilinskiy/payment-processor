@@ -1,10 +1,15 @@
 ## How to run
 - clone this repo
-- copy `.env.example` to '.env' and fill it with data
+- install docker and docker compose
+- copy `.env.example` to '.env' and fill it with yours values
 - run in terminal in project folder
   - `docker-compose up`
   - `docker-compose exec app composer install`
   - `docker-compose exec app php artisan key:generate`
+- In order to start fee calculator - run in terminal in project folder:
+  - `docker-compose exec app php artisan fee-calculator:csv /var/www/tests/test.csv`
+- In order to start fee calculator test - run in terminal in project folder:
+  - `docker-compose exec app php artisan test --testsuite=Feature`
 
 # Task
 ## Situation
